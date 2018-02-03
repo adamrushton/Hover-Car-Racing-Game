@@ -1,0 +1,96 @@
+//-----------------------------------------------------------------------------
+// Global variables
+//-----------------------------------------------------------------------------
+
+// Camera position for specular calculations
+float3 CameraPosition : CAMERAPOSITION;
+
+// Ambient light colour
+float4 AmbientColour;
+
+// Position lights defined by position, colour and attenuation
+float3 LightPositions[2];
+float4 LightColours[2];
+float LightAttenuations[2];
+
+// The specular power of the material
+float SpecularPower;
+
+// Access to textures 0 & 1
+sampler2D Tex0;
+sampler2D Tex1;
+
+
+//-----------------------------------------------------------------------------
+// Input / output structures
+//-----------------------------------------------------------------------------
+
+// Input to Pixel Shader
+struct PS_Input
+{
+	float4 Position      : POSITION;
+	float2 TexCoord0     : TEXCOORD0;
+	float3 WorldPosition : TEXCOORD1;
+	float3 Normal        : TEXCOORD2;
+};
+
+// Output from Pixel Shader
+struct PS_Output
+{
+	float4 Colour : COLOR0;
+};
+
+
+//-----------------------------------------------------------------------------
+// Main function
+//-----------------------------------------------------------------------------
+
+// Main pixel shader function. The vertex shader passed on the world coordinate and normal
+// for each vertex - these have now been interpolated so we have the position and normal
+// for each pixel. This allows us to calcuate the lighting in the pixel shader, giving more
+// accurate lighting effects - especially on large polygons.
+//
+// Calculates combined ambient, diffuse and specular from an array of lights, mutiplies a
+// texture into the diffuse and a "gloss map" texture into the specular - a gloss map
+// determines which parts of a surface are reflective
+// 
+// Note that this is a fairly expensive pixel shader - there are some optimisations that could
+// be used to make it a little more efficient. However, this kind of complex pixel-shader
+// technique is becoming more common (for next-gen too)
+void main( in PS_Input i, out PS_Output o ) 
+{
+	// Get vector from pixel to camera
+	float3 CameraDir = normalize( CameraPosition - i.WorldPosition );
+
+	// Interpolated normals need to be renormalised
+	float3 Normal = normalize( i.Normal );
+
+	// Initial diffuse and specular colour
+	float4 DiffuseColour = AmbientColour;
+	float4 SpecularColour = 0;
+	
+	// For each light...
+	for (int light = 0; light < 2; ++light)
+	{
+		// Calculate vector to light and intensity (from attenuation factor)
+		float3 LightVector = LightPositions[light] - i.WorldPosition;
+		float LightIntensity = min( 1.0f, LightAttenuations[light] / length(LightVector) );
+
+		// Get direction vector from pixel to light, and half-way vector for specular
+		float3 LightDir = normalize( LightVector );
+		float3 HalfWay = normalize( CameraDir + LightDir );
+		
+		// Calculate diffuse & specular light levels
+		float DiffuseLevel = max( 0.0f, dot( Normal, LightDir ) );
+		float SpecularLevel = pow( dot( Normal, HalfWay ), SpecularPower );
+		
+		// Add contribution from this light to overall diffuse and specular colours
+		DiffuseColour += LightColours[light] * LightIntensity * DiffuseLevel;
+		SpecularColour += LightColours[light] * LightIntensity * DiffuseLevel * 2 * SpecularLevel;
+	}
+	
+	// Combine texture, diffuse and specular colours
+	float4 TextureColour = tex2D( Tex0, i.TexCoord0 );
+	float4 GlossColour = tex2D( Tex1, i.TexCoord0 );
+    o.Colour = DiffuseColour * TextureColour + SpecularColour * GlossColour;
+}
