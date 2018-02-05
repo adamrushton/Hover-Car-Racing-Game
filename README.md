@@ -24,6 +24,8 @@
 - Array table for computer car speeds, changing in speeds randomly selecting a speed from the table
 - Hover Car Turbo
 - Particle Systems
+- Changing car colour
+- Changing car fume colour
 
 ### **Screenshots:**
 
