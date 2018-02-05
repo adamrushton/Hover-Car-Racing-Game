@@ -4,7 +4,7 @@
 ### **Description:** 3D single player racing against computer hover cars. Mysterious crates giving power ups and bad effects depending on the crate. High scores storing your fastest times (stored in a file) and another file storing key bindings allowing you to change the game controls.
 
 ### **Programming techniques used/Notes:**
-- Vectors with turret shooting vechiles and hover car turbos/exhausts
+- Vectors with turret shooting vehicles and hover car turbos/exhausts
 - Fully Object Oriented (All classes)
 - Structures
 - Polymorphism, Inheritance for Crate Looting System and Bounding Boxes on the 3D models
