@@ -3,6 +3,44 @@
 
 ### **Description:** 3D single player racing against computer hover cars. Mysterious crates giving power ups and bad effects depending on the crate. High scores storing your fastest times (stored in a file) and another file storing key bindings allowing you to change the game controls.
 
+### **Programming techniques used:**
+Vectors with turret shooting vechiles and hover car turbos/exhausts
+
+Fully Object Oriented (All classes)
+
+Structures
+
+Polymorphism, Inheritance for Crate Looting System and Bounding Boxes on the 3D models
+
+Included SFML (Simple and Fast Multimedia Library) for game sounds
+
+Enumerated Types
+
+Arrays and Vectors (Dynamic arrays)
+
+Collision Detection: Axis Alligned Bounding Boxes, Sphere to Box
+
+### **Extra Features:**
+Flare/Bombs spawning round the race course
+
+Turret systems shooting at vehicles
+
+Crate System with 3 different types. Health restore, engine failure and poison crate types
+
+Accurate minimap of the track. Colour dots for each colour car, crates, flares, obstacles and player camera shown on the minimap
+
+Highscores - Storing players 5 fastest race times
+
+Menu System - Including key bindings stored in a file, loading and allowing user to change these settings. 
+
+Menu Sounds and Game Sounds
+
+Array table for computer car speeds, changing in speeds randomly selecting a speed from the table
+
+Hover Car Turbo
+
+Particle Systems
+
 ### **Screenshots:**
 
 ![image](https://user-images.githubusercontent.com/13036791/35817560-a81b1930-0a95-11e8-8f1f-31bf516125fc.png)
