@@ -12,6 +12,7 @@
 - Enumerated Types
 - Arrays and Vectors (Dynamic arrays)
 - Collision Detection: Axis Alligned Bounding Boxes, Sphere to Box
+- Computer cars follow waypoints to navigate round the track
 
 ### **Extra Features:**
 - Flare/Bombs spawning round the race course
